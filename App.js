@@ -1,20 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import Navigation from "./src/navigation";
+import {createTheme, ThemeProvider} from "@rneui/themed";
+import AppLoading from 'expo-app-loading';
+import {
+  useFonts,
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_600SemiBold,
+  Montserrat_700Bold,
+} from '@expo-google-fonts/montserrat';
+import {StatusBar} from "expo-status-bar";
+
+const theme = createTheme({
+  lightColors: {
+    primary: '#e7e7e8',
+  },
+  darkColors: {
+    primary: '#000',
+  },
+  mode: 'light',
+});
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  let [fontsLoaded] = useFonts({
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
+    Montserrat_700Bold,
+  });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <ThemeProvider theme={theme}>
+        <StatusBar
+          animated={true}
+          backgroundColor={'transparent'}
+          style="light"
+        />
+        <Navigation/>
+      </ThemeProvider>
+    );
+  }
+}
